@@ -1,0 +1,18 @@
+{
+  "name": "crud/slim",
+  "authors": [
+    {
+      "name": "Wesley",
+      "email": "7s3ven7.1@gmail.com"
+    }
+  ],
+  "require": {
+    "slim/slim": "^4.0",
+    "slim/psr7": "1.7.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "code\\": "code/phpClasses/src"
+    }
+  }
+}
