@@ -85,13 +85,10 @@ $app->post('/create', function (Request $request, Response $response)
     $nome = trim($_POST['name']) ?? '';
     $tell = trim($_POST['tell']) ?? '';
     $email = filter_var($_POST['email'], FILTER_SANITIZE_EMAIL);
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT) ?? '';
+    $password = $_POST['password'] ?? '';
 
     $user = new User($nome, $password, $email, $tell);
-    var_dump($user);
 
-    $response->getBody()->write($user->getName(
-    ));
 
     return $response;
 

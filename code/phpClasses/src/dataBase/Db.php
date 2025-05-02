@@ -25,7 +25,6 @@ Class Db
     private function setParams($stmt,$params):void
     {
 
-        var_dump($params);
         foreach ($params as $key => $value) {
 
             $this->bindParam($stmt, $key, $value);
@@ -41,16 +40,24 @@ Class Db
 
     }
 
-    protected function query($rawQuery, $params):void
+    protected function query($rawQuery, $params):object
     {
 
         $stmt = $this->conn->prepare($rawQuery);
 
         $this->setParams($stmt, $params);
 
-        var_dump($stmt);
         $stmt->execute();
 
+        return $stmt;
+
+    }
+
+    protected function select($rawQuery, $params):array
+    {
+        $stmt = $this->query($rawQuery, $params);
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
 

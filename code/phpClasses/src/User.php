@@ -15,6 +15,8 @@ Class User extends Db
 
     private string $tell;
 
+    private array $userFound;
+
     public function __construct(private readonly string $userName, private readonly string $userPassword, private readonly string $userEmail, private readonly string $userTell) {
 
         parent::__construct();
@@ -24,7 +26,17 @@ Class User extends Db
         $this->email = $this->userEmail;
         $this->tell = $this->userTell;
 
-        $this->saveUser();
+        if($this->verifyUser()){
+
+            $this->saveUser();
+
+            return $this->loadUser();
+
+        }else {
+
+            return $this->loadUser();
+
+        }
 
     }
 
@@ -62,30 +74,79 @@ Class User extends Db
         parent::query("INSERT INTO users (name, password, email, tell) VALUES (:name, :password, :email, :tell)",
             [
                 'name' => $this->getName(),
-                'password' => $this->getPassword(),
+                'password' => password_hash($this->getPassword(), PASSWORD_DEFAULT),
                 'email' => $this->getEmail(),
                 'tell' => $this->getTell()
             ]);
 
     }
 
-    public function findUser():void
+    private function findUser():array
     {
+
+        $this->userFound = parent::select("SELECT * FROM users WHERE email = :email", ["email" => $this->getEmail()]);
+
+        return $this->userFound;
 
     }
 
-    public function verifyUser():void
+    private function verifyUser():bool
     {
+        if(!count($this->findUser()))
+        {
 
-        parent::query();
+            return true;
+
+        }
+        else{
+
+            return false;
+
+        }
 
     }
 
-    public function getVar()
+    private function verifyPassword():bool
     {
 
+        $password = $this->userFound[0]['password'];
+
+        if(password_verify($this->getPassword(), $password))
+        {
+
+            return true;
+
+        }else
+        {
+
+            return false;
+
+        }
 
     }
 
+    private function loadUser():array
+    {
+        if($this->verifyPassword()){
+
+            $data = array(
+                $this->userFound[0]['id'],
+                $this->userFound[0]['name'],
+                '**********',
+                $this->userFound[0]['email'],
+                $this->userFound[0]['tell']
+            );
+
+            return [ 'data' => $data, 'message' => 'logado com sucesso', 'error' => ''];
+
+        }
+        else
+        {
+
+            return ['message' => 'senha incorreta', 'error' => 'erro 404'];
+
+        }
+
+    }
 
 }
