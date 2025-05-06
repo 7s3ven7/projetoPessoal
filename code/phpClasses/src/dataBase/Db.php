@@ -2,6 +2,8 @@
 
 namespace code\dataBase;
 
+use PDO;
+
 Class Db
 {
 
@@ -18,7 +20,7 @@ Class Db
     protected function __construct()
     {
 
-        $this->conn = new \PDO("mysql:host=" . DB::HOST . ";dbname=" . DB::DATABASE, DB::USER, DB::PASSWORD);
+        $this->conn = new PDO("mysql:host=" . DB::HOST . ";dbname=" . DB::DATABASE, DB::USER, DB::PASSWORD);
 
     }
 
@@ -36,8 +38,18 @@ Class Db
     private function bindParam($stmt, $key, $value):void
     {
 
-            $stmt->bindParam($key, $value);
+            $stmt->bindParam($key, $value, $this->setType($value));
 
+    }
+
+    private function setType($value):string{
+
+        return match ($value) {
+            is_int($value) => PDO::PARAM_INT,
+            is_bool($value) => PDO::PARAM_BOOL,
+            is_null($value) => PDO::PARAM_NULL,
+            default => PDO::PARAM_STR,
+        };
     }
 
     protected function query($rawQuery, $params):object
@@ -57,8 +69,7 @@ Class Db
     {
         $stmt = $this->query($rawQuery, $params);
 
-        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
 
 }

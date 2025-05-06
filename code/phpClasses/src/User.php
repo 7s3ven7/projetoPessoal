@@ -3,81 +3,87 @@
 namespace code;
 
 use code\dataBase\Db;
+use Random\RandomException;
 
 Class User extends Db
 {
-
-    private string $name;
 
     private string $password;
 
     private string $email;
 
-    private string $tell;
+    private string $remember;
 
     private array $userFound;
 
-    public function __construct(private readonly string $userName, private readonly string $userPassword, private readonly string $userEmail, private readonly string $userTell) {
+    public function __construct($data = []) {
 
         parent::__construct();
 
-        $this->name = $this->userName;
-        $this->password = $this->userPassword;
-        $this->email = $this->userEmail;
-        $this->tell = $this->userTell;
 
-        if($this->verifyUser()){
 
-            $this->saveUser();
+        if ($data === [])
+        {
 
-            return $this->loadUser();
+            $this->password = $_SESSION['password'];
+            $this->email = $_SESSION['email'];
 
-        }else {
+        } else
+        {
 
-            return $this->loadUser();
+            $this->password = $data['password'];
+            $this->email = $data['email'];
+            $this->remember = $data['remember'];
+
+            if(!$this->verifyUser()) {
+
+                $this->loadUser();
+
+            }
 
         }
 
-    }
 
-    public function getName(): string
-    {
-
-        return $this->name;
 
     }
 
-    public function getPassword(): string
+    private function getPassword(): string
     {
 
         return $this->password;
 
     }
 
-    public function getEmail(): string
+    private function getEmail(): string
     {
 
         return $this->email;
 
     }
 
-    function getTell(): string
+    public function saveUser($data):bool
     {
 
-        return $this->tell;
+        if(!count($this->searchUserByEmail($data['email']))){
 
-    }
+            if(!$this->validateUser($data))
+            {
+                return false;
+            }
 
-    public function saveUser():void
-    {
+            parent::query("INSERT INTO users (name, password, email, tell) VALUES (:name, :password, :email, :tell)",
+                [
+                    'name' => trim($data['name']),
+                    'password' => password_hash($data['password'], PASSWORD_DEFAULT),
+                    'email' => filter_var($data['email'], FILTER_SANITIZE_EMAIL),
+                    'tell' => trim($data['tell'])
+                ]);
 
-        parent::query("INSERT INTO users (name, password, email, tell) VALUES (:name, :password, :email, :tell)",
-            [
-                'name' => $this->getName(),
-                'password' => password_hash($this->getPassword(), PASSWORD_DEFAULT),
-                'email' => $this->getEmail(),
-                'tell' => $this->getTell()
-            ]);
+            return true;
+
+        }
+
+        return false;
 
     }
 
@@ -125,28 +131,113 @@ Class User extends Db
 
     }
 
-    private function loadUser():array
+    /**
+     * @throws RandomException
+     */
+
+    private function loadUser():void
     {
-        if($this->verifyPassword()){
 
-            $data = array(
-                $this->userFound[0]['id'],
-                $this->userFound[0]['name'],
-                '**********',
-                $this->userFound[0]['email'],
-                $this->userFound[0]['tell']
-            );
-
-            return [ 'data' => $data, 'message' => 'logado com sucesso', 'error' => ''];
-
-        }
-        else
+        if(isset($_COOKIE['token']))
         {
 
-            return ['message' => 'senha incorreta', 'error' => 'erro 404'];
+            $data = parent::select('SELECT * FROM users WHERE token = :token', ['token' => $_COOKIE['token']]);
+
+            $_SESSION['user'] = $data[0]['id'];
+            $_SESSION['name'] = $data[0]['name'];
+            $_SESSION['password'] = $data[0]['password'];
+            $_SESSION['email'] = $data[0]['email'];
+            $_SESSION['tell'] = $data[0]['tell'];
+
+        }elseif($this->verifyPassword()){
+
+            $_SESSION['user'] = $this->userFound[0]['id'];
+            $_SESSION['name'] = $this->userFound[0]['name'];
+            $_SESSION['password'] = $this->userFound[0]['password'];
+            $_SESSION['email'] = $this->userFound[0]['email'];
+            $_SESSION['tell'] = $this->userFound[0]['tell'];
+
+            if($this->remember === 'sim')
+            {
+                $sessionToken = bin2hex(random_bytes(32));
+
+                parent::query("UPDATE users SET token = :token WHERE id = :id",['token' => $sessionToken, 'id' => $this->userFound[0]['id']]);
+
+                setcookie('token', $sessionToken , time() + (86400), "/");
+
+            }
 
         }
 
     }
+
+    public function viewUsers():array
+    {
+
+        return parent::select("SELECT * FROM users",[]);
+
+    }
+
+    public function searchUser($id):array
+    {
+
+        return parent::select("SELECT * FROM users WHERE id = :id", ['id' => $id]);
+
+    }
+
+    public function searchUserByEmail($email):array
+    {
+
+        return parent::select("SELECT * FROM users WHERE email = :email", ['email' => $email]);
+
+    }
+
+    public function deleteUser($id):void
+    {
+
+        parent::query("DELETE FROM users WHERE id = :id", ['id' => $id]);
+
+        var_dump((string)$_SESSION['user']);
+        var_dump($id);
+
+        if((string)$id === (string)$_SESSION['user'])
+        {
+
+            session_unset();
+
+            session_destroy();
+
+        }
+
+    }
+
+    public function modifyUser($id,$data):void
+    {
+
+        parent::query("UPDATE users SET name = :name, password = :password, tell = :tell WHERE id = :id",["name"=>$data['name'],"password"=>$data['password'],"tell"=>$data['tell'],"id"=>$id]);
+
+    }
+
+    private function validateUser($data):bool
+    {
+
+        if(empty($data['email']) || !filter_var($data['email'], FILTER_VALIDATE_EMAIL))
+        {
+
+            return false;
+
+        }
+
+        if(empty($data['tell']) || !preg_match('/^\d{10,15}$/', trim($data['tell'])))
+        {
+
+            return false;
+
+        }
+
+        return true;
+
+    }
+
 
 }
