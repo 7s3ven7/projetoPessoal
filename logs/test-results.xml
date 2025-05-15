@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="C:\Users\wesle\curso\CRUD\phpunit.xml" tests="19" assertions="40" errors="0" failures="0" skipped="0" time="0.846083">
+    <testsuite name="General Tests" tests="19" assertions="40" errors="0" failures="0" skipped="0" time="0.846083">
+      <testsuite name="MyApp\Test\Entity\TestUser\UserTest" file="C:\Users\wesle\curso\CRUD\Tests\Entity\UserTest.php" tests="13" assertions="25" errors="0" failures="0" skipped="0" time="0.784977">
+        <testcase name="testSession" file="C:\Users\wesle\curso\CRUD\Tests\Entity\UserTest.php" line="39" class="MyApp\Test\Entity\TestUser\UserTest" classname="MyApp.Test.Entity.TestUser.UserTest" assertions="4" time="0.238728"/>
+        <testcase name="testGetters" file="C:\Users\wesle\curso\CRUD\Tests\Entity\UserTest.php" line="55" class="MyApp\Test\Entity\TestUser\UserTest" classname="MyApp.Test.Entity.TestUser.UserTest" assertions="2" time="0.013736"/>
+        <testsuite name="MyApp\Test\Entity\TestUser\UserTest::testGetValues" tests="4" assertions="4" errors="0" failures="0" skipped="0" time="0.029491">
+          <testcase name="testGetValues with data set &quot;ValidEmail&quot;" file="C:\Users\wesle\curso\CRUD\Tests\Entity\UserTest.php" line="70" class="MyApp\Test\Entity\TestUser\UserTest" classname="MyApp.Test.Entity.TestUser.UserTest" assertions="1" time="0.016674"/>
+          <testcase name="testGetValues with data set &quot;InvalidEmail&quot;" file="C:\Users\wesle\curso\CRUD\Tests\Entity\UserTest.php" line="70" class="MyApp\Test\Entity\TestUser\UserTest" classname="MyApp.Test.Entity.TestUser.UserTest" assertions="1" time="0.003796"/>
+          <testcase name="testGetValues with data set &quot;EmptyEmail&quot;" file="C:\Users\wesle\curso\CRUD\Tests\Entity\UserTest.php" line="70" class="MyApp\Test\Entity\TestUser\UserTest" classname="MyApp.Test.Entity.TestUser.UserTest" assertions="1" time="0.004038"/>
+          <testcase name="testGetValues with data set &quot;NullEmail&quot;" file="C:\Users\wesle\curso\CRUD\Tests\Entity\UserTest.php" line="70" class="MyApp\Test\Entity\TestUser\UserTest" classname="MyApp.Test.Entity.TestUser.UserTest" assertions="1" time="0.004983"/>
+        </testsuite>
+        <testcase name="testRead" file="C:\Users\wesle\curso\CRUD\Tests\Entity\UserTest.php" line="94" class="MyApp\Test\Entity\TestUser\UserTest" classname="MyApp.Test.Entity.TestUser.UserTest" assertions="4" time="0.204200"/>
+        <testsuite name="MyApp\Test\Entity\TestUser\UserTest::testCreateAndDelete" tests="3" assertions="4" errors="0" failures="0" skipped="0" time="0.254159">
+          <testcase name="testCreateAndDelete with data set &quot;ValidForm&quot;" file="C:\Users\wesle\curso\CRUD\Tests\Entity\UserTest.php" line="111" class="MyApp\Test\Entity\TestUser\UserTest" classname="MyApp.Test.Entity.TestUser.UserTest" assertions="2" time="0.223026"/>
+          <testcase name="testCreateAndDelete with data set &quot;EmptyForm&quot;" file="C:\Users\wesle\curso\CRUD\Tests\Entity\UserTest.php" line="111" class="MyApp\Test\Entity\TestUser\UserTest" classname="MyApp.Test.Entity.TestUser.UserTest" assertions="1" time="0.014345"/>
+          <testcase name="testCreateAndDelete with data set &quot;NullForm&quot;" file="C:\Users\wesle\curso\CRUD\Tests\Entity\UserTest.php" line="111" class="MyApp\Test\Entity\TestUser\UserTest" classname="MyApp.Test.Entity.TestUser.UserTest" assertions="1" time="0.016788"/>
+        </testsuite>
+        <testsuite name="MyApp\Test\Entity\TestUser\UserTest::testUpdate" tests="3" assertions="7" errors="0" failures="0" skipped="0" time="0.044662">
+          <testcase name="testUpdate with data set &quot;ValidForm&quot;" file="C:\Users\wesle\curso\CRUD\Tests\Entity\UserTest.php" line="156" class="MyApp\Test\Entity\TestUser\UserTest" classname="MyApp.Test.Entity.TestUser.UserTest" assertions="3" time="0.015274"/>
+          <testcase name="testUpdate with data set &quot;InvalidForm&quot;" file="C:\Users\wesle\curso\CRUD\Tests\Entity\UserTest.php" line="156" class="MyApp\Test\Entity\TestUser\UserTest" classname="MyApp.Test.Entity.TestUser.UserTest" assertions="2" time="0.015061"/>
+          <testcase name="testUpdate with data set &quot;NullForm&quot;" file="C:\Users\wesle\curso\CRUD\Tests\Entity\UserTest.php" line="156" class="MyApp\Test\Entity\TestUser\UserTest" classname="MyApp.Test.Entity.TestUser.UserTest" assertions="2" time="0.014326"/>
+        </testsuite>
+      </testsuite>
+      <testsuite name="MyApp\Test\Middleware\TestSession\SessionMiddlewareTest" file="C:\Users\wesle\curso\CRUD\Tests\Middleware\SessionMiddlewareTest.php" tests="1" assertions="2" errors="0" failures="0" skipped="0" time="0.003949">
+        <testcase name="TestSession" file="C:\Users\wesle\curso\CRUD\Tests\Middleware\SessionMiddlewareTest.php" line="16" class="MyApp\Test\Middleware\TestSession\SessionMiddlewareTest" classname="MyApp.Test.Middleware.TestSession.SessionMiddlewareTest" assertions="2" time="0.003949"/>
+      </testsuite>
+      <testsuite name="MyApp\Test\Repository\TestDb\DbTest" file="C:\Users\wesle\curso\CRUD\Tests\Repository\DbTest.php" tests="5" assertions="13" errors="0" failures="0" skipped="0" time="0.057157">
+        <testsuite name="MyApp\Test\Repository\TestDb\DbTest::TestCrud" tests="5" assertions="13" errors="0" failures="0" skipped="0" time="0.057157">
+          <testcase name="TestCrud with data set &quot;ValidName_ValidUpdated_ValidEmail&quot;" file="C:\Users\wesle\curso\CRUD\Tests\Repository\DbTest.php" line="18" class="MyApp\Test\Repository\TestDb\DbTest" classname="MyApp.Test.Repository.TestDb.DbTest" assertions="5" time="0.020904"/>
+          <testcase name="TestCrud with data set &quot;ValidName_ValidUpdated_NullEmail&quot;" file="C:\Users\wesle\curso\CRUD\Tests\Repository\DbTest.php" line="18" class="MyApp\Test\Repository\TestDb\DbTest" classname="MyApp.Test.Repository.TestDb.DbTest" assertions="2" time="0.006449"/>
+          <testcase name="TestCrud with data set &quot;ValidName_ValidUpdated_EmptyEmail&quot;" file="C:\Users\wesle\curso\CRUD\Tests\Repository\DbTest.php" line="18" class="MyApp\Test\Repository\TestDb\DbTest" classname="MyApp.Test.Repository.TestDb.DbTest" assertions="2" time="0.003410"/>
+          <testcase name="TestCrud with data set &quot;NullName_NullUpdated_NullEmail&quot;" file="C:\Users\wesle\curso\CRUD\Tests\Repository\DbTest.php" line="18" class="MyApp\Test\Repository\TestDb\DbTest" classname="MyApp.Test.Repository.TestDb.DbTest" assertions="2" time="0.010004"/>
+          <testcase name="TestCrud with data set &quot;EmptyName_EmptyUpdated_EmptyEmail&quot;" file="C:\Users\wesle\curso\CRUD\Tests\Repository\DbTest.php" line="18" class="MyApp\Test\Repository\TestDb\DbTest" classname="MyApp.Test.Repository.TestDb.DbTest" assertions="2" time="0.016390"/>
+        </testsuite>
+      </testsuite>
+    </testsuite>
+  </testsuite>
+</testsuites>
